@@ -1,0 +1,12 @@
+Bootstrap: docker
+From: ubuntu:22.04
+
+%post
+    # Update package lists and install 'libosmesa6-dev'
+    apt-get update
+    apt-get install -y libosmesa6-dev
+
+%runscript
+    # Add a runscript to execute a simple test command inside the container
+    echo "libosmesa6-dev has been successfully installed!"
+
