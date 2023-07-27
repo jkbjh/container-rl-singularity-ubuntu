@@ -4,7 +4,10 @@ From: ubuntu:22.04
 %post
     # Update package lists and install 'libosmesa6-dev'
     apt-get update
-    apt-get install -y libosmesa6-dev
+    apt-get install -y libosmesa6-dev python3.10 python3.10-dev python3.10-minimal python3.10-venv build-essential patchelf git 
+#nvidia-utils-520 nvidia-driver-520
+
+
 
 %runscript
     # Add a runscript to execute a simple test command inside the container
