@@ -1,15 +1,31 @@
-Bootstrap: docker
 From: ubuntu:22.04
 
 %post
     # Update package lists and install 'libosmesa6-dev'
     apt-get update
-    apt-get install -y libosmesa6-dev python3.10 python3.10-dev python3.10-minimal python3.10-venv build-essential patchelf git 
+    apt-get install -y python3.10 python3.10-dev python3.10-minimal python3.10-venv python3.10-distutils python3-pip build-essential patchelf git wget
+
+    # add cuda network repositories to install cuda-compat packages
+    wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
+    dpkg -i cuda-keyring_1.1-1_all.deb
+    apt-get update
+    apt-get install -y cuda-compat-12.6
+    
 #nvidia-utils-520 nvidia-driver-520
 
-
+%environment
+    export LD_LIBRARY_PATH=/usr/local/cuda-12.6/compat:$LD_LIBRARY_PATH
 
 %runscript
     # Add a runscript to execute a simple test command inside the container
-    echo "libosmesa6-dev has been successfully installed!"
+    python3 -m pip install virtualenv
+    python3 -m venv env
+    source env/bin/activate
+    python3 -m pip install --upgrade pip
+    echo "updated pip"
+    python3 -m pip install pip-tools
+    echo "installed pip-tools"
+    pip-compile -v requirements.in requirements.dev --output-file requirements.built
+    python3 -m pip install -r requirements.built
 
+    #python3 -m lensim.train_simulator --network-architecture pure_processor --env-name trifinger --save-model-to lensim/models/trifinger_pure_processor.params --learning-rate 1e-5 --steps-per-epoch 1000 --total-training-steps 5000```
