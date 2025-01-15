@@ -4,7 +4,7 @@ From: ubuntu:24.04
 %post
     # Update package lists and install 'libosmesa6-dev'
     apt-get update
-    apt-get install -y libosmesa6-dev python3.12 python3-pip python3.12-dev python3.12-minimal python3.12-venv build-essential patchelf git slurm-client
+    apt-get install -y libosmesa6-dev python3.12 python3-pip python3.12-dev python3.12-minimal python3.12-venv build-essential patchelf git slurm-client libegl1 libegl-dev
     apt-get clean
 
 %runscript
