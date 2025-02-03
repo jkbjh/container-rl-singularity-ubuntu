@@ -4,9 +4,15 @@ From: ubuntu:22.04
 %post
     # Update package lists and install 'libosmesa6-dev'
     apt-get update
-    apt-get install -y libosmesa6-dev python3.10 python3.10-dev python3.10-minimal python3.10-venv build-essential patchelf git slurm-client
+    apt-get install -y libosmesa6-dev python3.10 python3.10-dev python3.10-minimal python3.10-venv build-essential patchelf git python-is-python3 # slurm-client
 
+    # --- forcing newer version of slurm
+    UBUNTU_RELEASE=$(lsb_release -c | awk '{print $2}')
+    echo "deb http://archive.ubuntu.com/ubuntu/ noble main restricted universe multiverse" > /etc/apt/sources.list.d/ubuntu-24.04.list
 
+    # Install the slurm-client package from Ubuntu 24.04 repository
+    apt-get update
+    apt-get install -y slurm-client -t noble
 
 %runscript
     # Add a runscript to execute a simple test command inside the container
