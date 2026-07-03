@@ -2,11 +2,17 @@ Bootstrap: docker
 From: ubuntu:22.04
 
 %post -c /usr/bin/bash
+    # PREPARE
     set -e
-
     apt-get update
+
+    # INSTALL
     apt-get install -y libosmesa6-dev python3.10 python3.10-dev python3.10-minimal python3.10-venv build-essential patchelf git python-is-python3
     apt-get install -y libegl1 libgles2 libegl-dev mesa-utils
+    apt-get install -y nano
+    # Install uv directly to a system-wide path, not $HOME
+    apt-get install -y curl ca-certificates
+    curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR="/usr/local/bin" sh
 
     # --- Build & install Slurm 25.11.3 from the official source tarball ---
     SLURM_VERSION=25.11.3
@@ -33,15 +39,8 @@ From: ubuntu:22.04
     cd ..
     ls -la *.deb
     apt-get install -y ./slurm-smd-client_*.deb ./slurm-smd_*.deb
-    
-    ## UV Install
-    curl -LsSf https://astral.sh/uv/install.sh | sh
-    # uv installs to /root/.local/bin by default, add to PATH
-    export PATH="/root/.local/bin:$PATH"
-    
-    ## Nano install
-    apt-get install nano
-    
+
+    # CLEANUP
     apt-get purge -y "${BUILD_DEPS_PKG}" devscripts equivs fakeroot wget
     apt-get autoremove -y
     apt-get clean
