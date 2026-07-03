@@ -17,6 +17,14 @@ From: ubuntu:22.04
     # Install the slurm-client package from Ubuntu 24.04 repository
     apt-get update
     apt-get install -y slurm-client -t noble
+    
+    # install uv
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    # uv installs to /root/.local/bin by default, add to PATH
+    export PATH="/root/.local/bin:$PATH"
+    
+    #install nano
+    apt-get install nano
 
 %runscript
     # Add a runscript to execute a simple test command inside the container
