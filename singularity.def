@@ -33,7 +33,15 @@ From: ubuntu:22.04
     cd ..
     ls -la *.deb
     apt-get install -y ./slurm-smd-client_*.deb ./slurm-smd_*.deb
-
+    
+    ## UV Install
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    # uv installs to /root/.local/bin by default, add to PATH
+    export PATH="/root/.local/bin:$PATH"
+    
+    ## Nano install
+    apt-get install nano
+    
     apt-get purge -y "${BUILD_DEPS_PKG}" devscripts equivs fakeroot wget
     apt-get autoremove -y
     apt-get clean
